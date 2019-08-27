@@ -1,0 +1,46 @@
+什么是迭代器？
+    顾名思义 迭代器是一种迭代操作（for循环）的对象，它可以像列表一样获取其中的每一个元素，实现了__iter__方法即为迭代器对象，实现了__next__方法即为迭代器
+    __iter__方法是返回迭代器本身，__next__是获取下一个元素，没有元素时返回stopIteration
+    
+    为什么会有迭代器的诞生？它与列表的差异优势在哪？
+    列表是把所有元素一次性加载到内存中，比如10000个元素需要500M内存，而迭代器是在需要的时候，调用next才返回该元素，比如10000个元素，需要60个字节
+    
+    例如斐波那契数列：
+        class Fib:
+            def __init__(self,n):
+                self.prev = 0
+                self.sur = 1
+                self.n = n
+            def __iter__(self):
+                return self
+            def __next__(self):
+                if self.n > 0:
+                    value = self.cur
+                    self.cur = self.prev + self.cur
+                    self.prev = value
+                    self.n -= 1
+                else：
+                    raise stopIteration()
+            def __next__(self):
+                return self.next()
+            fib = Fib(10)
+            print([i for i in fib])
+什么是生成器？
+    生成器就是特殊的迭代器，因为我们在普通的迭代器里面要自己定义iter 和 next 方法，在生成器里面自己定义好了这两种方法
+    生成器函数（）,用yield返回
+    def duble(n):
+        yield n*2
+    用生成器写斐波那契数列与迭代器对比：
+        def Fib(n):
+            prev , surr = 0 , 1
+            while n > 0:
+                n -= 1
+                yield surr
+                prev , surr = surr , surr + prev
+        fib = Fib(10)
+        print([i for i in fib])
+    生成器表达式：
+        g = (i**2 for i in range(10))
+        type(g)
+        >>>generator#返回生成器对象
+        
